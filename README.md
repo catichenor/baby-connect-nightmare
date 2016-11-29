@@ -70,10 +70,12 @@ Example:
 	"password": "password",
 	"kidId": "kid124567890",
 	"type": "bm"
+	"quantity": "large"
 }
 ```
 
 Type is one of 'bm', 'bmWet', or 'wet'.
+Quantity is one of 'small', 'medium', or 'large'.
 
 
 ### BOTTLE

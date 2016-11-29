@@ -6,10 +6,11 @@ var Promise = require("promise");
  * @param {string} password
  * @param {string} kidId (eg. 'kid123456')
  * @param {string} type
+ * @param {string} quantity
  * @returns {promise}
  * @todo split out login and kid select logic
  */
-module.exports = function (email, password, kidId, type) {
+module.exports = function (email, password, kidId, type, quantity) {
 	return new Promise(function (fulfill, reject){
 
 		var typeSelector = null;
@@ -28,6 +29,22 @@ module.exports = function (email, password, kidId, type) {
 			return;
 		}
 
+		var quantitySelector = null;
+		switch(quantity) {
+		case "small":
+			quantitySelector = "0";
+			break;
+		case "medium":
+			quantitySelector = "1";
+			break;
+		case "large":
+			quantitySelector = "2";
+			break;
+		default:
+			reject("Unknown type");
+			return;
+		}
+
 		var babyConnect = new Nightmare()
 			.goto("https://www.baby-connect.com/login")
 			.wait("#email")
@@ -40,6 +57,8 @@ module.exports = function (email, password, kidId, type) {
 			.click("#" + kidId + " > a")
 			.wait(500)
 			.click("a[href='javascript:showDiaperDlg()']")
+			.wait(500)
+			.select('#qtycombo', quantitySelector)
 			.wait(500)
 			.click(typeSelector)
 			.wait(100)
